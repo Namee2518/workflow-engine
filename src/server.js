@@ -41,7 +41,7 @@ app.post("/api/step", (req, res) => {
   res.json(step);
 });
 
-// ADD RULE (🔥 STEP BASED)
+// ADD RULE
 app.post("/api/rule", (req, res) => {
   const { workflowId, condition, nextStepId, stepOrder } = req.body;
 
@@ -80,7 +80,7 @@ app.post("/api/start", (req, res) => {
   res.json(execution);
 });
 
-// NEXT STEP (🔥 FINAL FIXED)
+// NEXT STEP
 app.post("/api/next", (req, res) => {
   const { executionId } = req.body;
 
@@ -93,7 +93,6 @@ app.post("/api/next", (req, res) => {
 
   const currentStep = steps.find(s => s.id === exec.currentStepId);
 
-  // 🔥 RULES ONLY FOR CURRENT STEP
   const stepRules = rules.filter(
     r =>
       r.workflowId === exec.workflowId &&
@@ -111,7 +110,6 @@ app.post("/api/next", (req, res) => {
     } catch (e) {}
   }
 
-  // 🔥 PREVENT LOOP
   if (nextStepId === exec.currentStepId) {
     nextStepId = null;
   }
@@ -139,6 +137,8 @@ app.get("/api/execution/:id", (req, res) => {
   res.json(exec);
 });
 
-app.listen(5000, () => {
-  console.log("🔥 Server running on port 5000");
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🔥 Server running on port ${PORT}`);
 });
