@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Workflow Engine</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f6f8;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .card {
+      background: white;
+      padding: 15px;
+      margin: 15px auto;
+      width: 420px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    input {
+      width: 95%;
+      padding: 8px;
+      margin: 5px 0;
+    }
+
+    button {
+      padding: 8px 15px;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #output {
+      white-space: pre-wrap;
+      background: black;
+      color: lime;
+      padding: 10px;
+      height: 180px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1> Workflow Engine</h1>
+
+<div class="card">
+  <h3>Create Workflow</h3>
+  <input id="wfName" placeholder="Workflow Name">
+  <button onclick="createWorkflow()">Create</button>
+</div>
+
+<div class="card">
+  <h3>Add Step</h3>
+  <input id="stepName" placeholder="Step Name">
+  <input id="stepOrder" placeholder="Order (1,2...)">
+  <button onclick="addStep()">Add Step</button>
+</div>
+
+<div class="card">
+  <h3>Add Rule</h3>
+  <input id="condition" placeholder="amount > 100">
+  <input id="nextStep" placeholder="Next Step ID">
+  <input id="ruleStepOrder" placeholder="Apply Rule For Step Order (1 or 2)">
+  <button onclick="addRule()">Add Rule</button>
+</div>
+
+<div class="card">
+  <h3>Start Execution</h3>
+  <input id="amount" placeholder="Amount">
+  <button onclick="startExecution()">Start</button>
+</div>
+
+<div class="card">
+  <h3>Next Step</h3>
+  <input id="execId" placeholder="Execution ID">
+  <button onclick="nextStep()">Next</button>
+</div>
+
+<div class="card">
+  <h3>Logs</h3>
+  <input id="logId" placeholder="Execution ID">
+  <button onclick="getLogs()">Get Logs</button>
+</div>
+
+<div class="card">
+  <h3>Output</h3>
+  <div id="output"></div>
+</div>
+
+<script>
+let workflowId = null;
+
+// show output
+function show(data) {
+  document.getElementById("output").innerText =
+    JSON.stringify(data, null, 2);
+}
+
+// CREATE WORKFLOW
+async function createWorkflow() {
+  const name = document.getElementById("wfName").value;
+
+  const res = await fetch("http://localhost:5000/api/workflow", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ name })
+  });
+
+  const data = await res.json();
+  workflowId = data.id;
+
+  alert("✅ Workflow Created ID: " + workflowId);
+  show(data);
+}
+
+// ADD STEP
+async function addStep() {
+  if (!workflowId) {
+    alert("⚠️ Create workflow first");
+    return;
+  }
+
+  const name = document.getElementById("stepName").value;
+  const order = parseInt(document.getElementById("stepOrder").value);
+
+  const res = await fetch("http://localhost:5000/api/step", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      workflowId,
+      name,
+      order
+    })
+  });
+
+  const data = await res.json();
+  alert("✅ Step Added (ID: " + data.id + ")");
+  show(data);
+}
+
+// ADD RULE (🔥 FIXED)
+async function addRule() {
+  if (!workflowId) {
+    alert("⚠️ Create workflow first");
+    return;
+  }
+
+  const condition = document.getElementById("condition").value;
+  let nextStepId = document.getElementById("nextStep").value;
+  const stepOrder = parseInt(document.getElementById("ruleStepOrder").value);
+
+  nextStepId = nextStepId ? parseInt(nextStepId) : null;
+
+  const res = await fetch("http://localhost:5000/api/rule", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      workflowId,
+      condition,
+      nextStepId,
+      stepOrder
+    })
+  });
+
+  const data = await res.json();
+  alert("✅ Rule Added");
+  show(data);
+}
+
+// START EXECUTION
+async function startExecution() {
+  const amount = parseInt(document.getElementById("amount").value);
+
+  const res = await fetch("http://localhost:5000/api/start", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      workflowId,
+      data: { amount }
+    })
+  });
+
+  const data = await res.json();
+
+  document.getElementById("execId").value = data.id;
+  document.getElementById("logId").value = data.id;
+
+  alert("✅ Execution Started (ID: " + data.id + ")");
+  show(data);
+}
+
+// NEXT STEP
+async function nextStep() {
+  const executionId = parseInt(document.getElementById("execId").value);
+
+  const res = await fetch("http://localhost:5000/api/next", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ executionId })
+  });
+
+  const data = await res.json();
+  show(data);
+}
+
+// GET LOGS
+async function getLogs() {
+  const id = document.getElementById("logId").value;
+
+  const res = await fetch(`http://localhost:5000/api/execution/${id}`);
+  const data = await res.json();
+
+  show(data);
+}
+</script>
+
+</body>
+</html>
