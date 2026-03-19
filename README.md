@@ -1,49 +1,49 @@
 # 🚀 Workflow Engine – Halleyx Challenge
 
-> A dynamic and rule-driven workflow automation system designed to simulate real-world approval processes.
+A dynamic and rule-based workflow automation system designed to simulate real-world approval processes.
 
 ---
 
 ## 📌 Overview
 
-The **Workflow Engine** is a backend-driven system that enables dynamic creation, execution, and tracking of workflows with multiple steps and rule-based transitions.
+The Workflow Engine allows users to create, manage, and execute workflows dynamically using rules.
 
-This project demonstrates how complex business processes (like approvals) can be automated using configurable logic.
-
----
-
-## ✨ Key Features
-
-- 🔄 Dynamic Workflow Creation  
-- 🧩 Multi-Step Process Management  
-- ⚙️ Rule-Based Decision Engine  
-- 🔀 Conditional Step Routing  
-- 📊 Execution Tracking & Logs  
-- 🕒 Timestamped Activity Monitoring  
+Instead of hardcoding logic, this system evaluates conditions at runtime and automatically routes the workflow to the appropriate next step.
 
 ---
 
-## 🧠 Core Concept
+## ✨ Features
+
+- 🔄 Dynamic workflow creation  
+- 🧩 Multi-step process management  
+- ⚙️ Rule-based decision engine  
+- 🔀 Conditional step routing  
+- 📊 Execution tracking & logs  
+- 🕒 Timestamp-based monitoring  
+
+---
+
+## 🧠 How It Works
 
 Each workflow consists of:
 
-- **Steps** → Individual stages (e.g., Manager Approval)
-- **Rules** → Conditions that decide next step
-- **Execution Engine** → Processes input dynamically
+- **Steps** → Individual stages (e.g., Manager Approval)  
+- **Rules** → Conditions that determine the next step  
+- **Execution Engine** → Processes the workflow dynamically  
 
-📌 The system evaluates rules at runtime and routes the workflow accordingly.
+The system evaluates rules at runtime and moves the workflow accordingly.
 
 ---
 
 ## 🔄 Example Workflow
 
-### 🧾 Expense Approval System
+### 🧾 Expense Approval
 
 **Steps:**
 1. Manager Approval  
 2. Finance Approval  
 
-**Rule Logic:**
+**Rule:**
 
 amount > 100 → Finance Approval
 
@@ -71,75 +71,46 @@ Manager Approval → Completed
   "nextStepId": 2,
   "time": "2026-03-18T17:30:24Z"
 }
-
-✔️ Helps in debugging and tracking workflow behavior
-
 🏗️ Tech Stack
 
-⚡ Node.js
+Node.js
 
-🚀 Express.js
+Express.js
 
-🌐 REST APIs
+JavaScript
 
-🧠 JavaScript (Logic Engine)
+REST APIs
 
-📂 Project Structure
-workflow-engine/
-│── src/
-│   ├── controllers/
-│   ├── routes/
-│   ├── models/
-│   ├── services/
-│── config/
-│── server.js
-│── package.json
-⚙️ Setup & Run
-# Clone repository
-git clone https://github.com/Namee2518/workflow-engine.git
-
-# Go to project folder
-cd workflow-engine
-
-# Install dependencies
+▶️ Setup & Run
 npm install
-
-# Run server
 node src/server.js
 🎬 Demo Video
 
-👉 Watch the demo here:
-🔗 https://github.com/Namee2518/workflow-engine/blob/main/Demo%20video.mp4
+👉 Click below to watch the demo:
 
-💡 Future Enhancements
+💡 Future Improvements
 
-🗄️ Database Integration (MongoDB / MySQL)
+Database integration (MongoDB / MySQL)
 
-🧠 Advanced Rule Engine (AND, OR, Expressions)
+Advanced rule engine (AND, OR conditions)
 
-🔔 Notification System
+Notification system
 
-📊 Admin Dashboard & Analytics
+Admin dashboard
 
-🌐 Full Frontend UI
+Full frontend UI
 
 🎯 Why This Project Stands Out
 
 Real-world workflow simulation
 
-Clean separation of logic
+Clean and scalable backend design
 
-Scalable architecture
+Dynamic rule-based execution
 
-Dynamic rule evaluation
-
-Easily extendable system
+Easy to extend and customize
 
 👨‍💻 Author
 
 Nameetha
 GitHub: https://github.com/Namee2518
-
-⭐ Final Note
-
-If you find this project interesting, feel free to ⭐ the repository!
